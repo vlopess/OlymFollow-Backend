@@ -2,7 +2,10 @@ package com.OlymFollow.Backend.Services;
 
 
 import com.OlymFollow.Backend.Dtos.UserDTO;
+import com.OlymFollow.Backend.Dtos.UserRegisterDTO;
+import com.OlymFollow.Backend.Entitys.Country;
 import com.OlymFollow.Backend.Entitys.User;
+import com.OlymFollow.Backend.Repositories.CountryRepository;
 import com.OlymFollow.Backend.Repositories.UserRepository;
 import com.OlymFollow.Backend.Security.infra.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -17,29 +20,29 @@ import java.util.Optional;
 @Service
 public class UserService {
     protected final UserRepository userRepository;
-    protected final CountryService countryService;
+    protected final CountryRepository countryRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CountryService countryService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CountryRepository countryRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.countryService = countryService;
+        this.countryRepository = countryRepository;
     }
-    public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(UserDTO::new);
     }
 
-    public User getUserbyId(String encryptedId) throws Exception {
+    public UserDTO getUserById(String encryptedId) throws Exception {
         //Long id = new EncryptedId(encryptedId).getDecrypted();
         Optional<User> user = userRepository.findById(Long.parseLong(encryptedId));
-        return user.orElse(null);
+        return new UserDTO(unwrap(user));
     }
 
-    public UserDetails getUserByUsername(String username) {
-        return unwrap(userRepository.findByUsername(username));
+    public UserDTO getUserByUsername(String username) {
+        return new UserDTO(unwrap(userRepository.findByUsername(username)));
     }
 
-    public User addUser(UserDTO userDTO) {
+    public User addUser(UserRegisterDTO userDTO) {
         User user = new User(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -50,24 +53,25 @@ public class UserService {
     }
 
     public void subscribe(int userID, int countryID){
-        var user = userRepository.findById((long) userID);
-        if(user.isEmpty()) throw new NotFoundException("User not found");
-        var country = countryService.getCountryById(countryID);
-        if(country.isEmpty()) throw new NotFoundException("Country not found");
-        user.get().subscribe(country.get());
+        var userOp = userRepository.findById((long) userID);
+        var user = unwrap(userOp);
+        var countryOp = countryRepository.findById((long) countryID);
+        var country = CountryService.unwrap(countryOp);
+        user.subscribe(country);
     }
 
     public void unsubscribe(int userID, int countryID){
-        var user = userRepository.findById((long) userID);
-        if(user.isEmpty()) throw new NotFoundException("User not found");
-        var country = countryService.getCountryById(countryID);
-        if(country.isEmpty()) throw new NotFoundException("Country not found");
-        user.get().unsubscribe(country.get());
+        var userOp = userRepository.findById((long) userID);
+        var user = unwrap(userOp);
+        var countryOp = countryRepository.findById((long) countryID);
+        var country = CountryService.unwrap(countryOp);
+        user.unsubscribe(country);
     }
 
     public void deleteUser(Long id){
-        Optional<User> user = getUserById(id);
-        user.ifPresentOrElse(userRepository::delete, () -> {throw new NotFoundException("User not found");});
+        Optional<User> userOp = getUserById(id);
+        var user = unwrap(userOp);
+        userRepository.delete(user);
     }
     static User unwrap(Optional<User> user) {
         if(user.isPresent()) return user.get();

@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Esporte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
     @Column(nullable = false, unique = true)
     private String nome;
@@ -17,7 +16,7 @@ public class Esporte {
     }
     public Esporte(Long id, String nome) {
         this.id = id;
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
     }
     public String getNome() {
         return nome;

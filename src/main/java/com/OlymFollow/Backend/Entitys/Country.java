@@ -1,15 +1,12 @@
 package com.OlymFollow.Backend.Entitys;
 
 import com.OlymFollow.Backend.Models.Medal;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "pais")
-@JsonIgnoreProperties({ "id" })
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +20,7 @@ public class Country {
 
     public Country(Long id, String nome) {
         this.id = id;
-        this.nome = nome;
+        this.nome = nome.toLowerCase();
     }
 
     public Long getId() {

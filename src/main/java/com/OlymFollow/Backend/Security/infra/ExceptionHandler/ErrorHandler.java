@@ -25,12 +25,6 @@ public class ErrorHandler {
         return ResponseEntity.badRequest().build();
     }
 
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity handleExceptionFollower(Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleException500(Exception e) {
         return ResponseEntity.internalServerError().body(e.getLocalizedMessage());
@@ -39,6 +33,11 @@ public class ErrorHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity handleErrorBadCredentials() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity handleExceptionFollower(Exception e) {
+        return ResponseEntity.badRequest().body("You are already subscribed!");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

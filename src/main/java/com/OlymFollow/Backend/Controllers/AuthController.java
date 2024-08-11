@@ -3,6 +3,7 @@ package com.OlymFollow.Backend.Controllers;
 import com.OlymFollow.Backend.Dtos.TokenJWTData;
 import com.OlymFollow.Backend.Entitys.User;
 import com.OlymFollow.Backend.Models.AuthData;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,7 @@ public class AuthController {
 
 
     @PostMapping
+    @Operation(summary = "Faz login")
     public ResponseEntity<Object> login(@RequestBody AuthData data){
         var token = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var authentication = authenticationManager.authenticate(token);

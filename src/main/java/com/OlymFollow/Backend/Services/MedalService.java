@@ -1,6 +1,7 @@
 package com.OlymFollow.Backend.Services;
 
 import com.OlymFollow.Backend.Dtos.MedalDTO;
+import com.OlymFollow.Backend.Dtos.MedalRegisterDTO;
 import com.OlymFollow.Backend.Entitys.Medalha;
 import com.OlymFollow.Backend.Repositories.MedalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,15 @@ import java.util.List;
 
 @Service
 public class MedalService {
-    private MedalRepository medalRepository;
+    private final CountryService countryService;
+    private final MedalRepository medalRepository;
+    private final EsporteService esporteService;
 
     @Autowired
-    public MedalService(MedalRepository medalRepository) {
+    public MedalService(MedalRepository medalRepository, CountryService countryService, EsporteService esporteService) {
         this.medalRepository = medalRepository;
+        this.countryService = countryService;
+        this.esporteService = esporteService;
     }
 
     public List<MedalDTO> getAllMedals() {
@@ -33,6 +38,8 @@ public class MedalService {
 
 
     public Medalha addMedal(MedalDTO medaldto) {
+        var country = countryService.salvar(medaldto.country());
+        var esporte =  esporteService.salvar(medaldto.esporte());
         var medal = new Medalha(medaldto);
         return medalRepository.save(medal);
     }

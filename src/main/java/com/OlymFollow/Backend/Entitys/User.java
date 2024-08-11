@@ -1,6 +1,7 @@
 package com.OlymFollow.Backend.Entitys;
 
 import com.OlymFollow.Backend.Dtos.UserDTO;
+import com.OlymFollow.Backend.Dtos.UserRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +37,8 @@ public class User implements UserDetails {
     @JoinTable(
             name = "inscricoes",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "country_id")
+            inverseJoinColumns = @JoinColumn(name = "country_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "country_id"})
     )
     private List<Country> inscricoes = new ArrayList<>();
 
@@ -50,6 +52,13 @@ public class User implements UserDetails {
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.roles = userDTO.getRoles().stream().map(Role::new).toList();
+    }
+
+    public User(UserRegisterDTO registerDTO) {
+        this.username = registerDTO.getUsername();
+        this.email = registerDTO.getEmail();
+        this.password = registerDTO.getPassword();
+        this.roles = registerDTO.getRoles().stream().map(Role::new).toList();
     }
 
     public User(String username, String email, String password) {
