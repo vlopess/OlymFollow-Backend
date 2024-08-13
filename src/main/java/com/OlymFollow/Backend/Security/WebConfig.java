@@ -17,6 +17,8 @@ public class WebConfig {
     config.addAllowedOriginPattern("*"); // Permite todos os domínios
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
+    config.addExposedHeader("Authorization");
+    config.addExposedHeader("UserID");
     source.registerCorsConfiguration("/**", config);
     return new CorsFilter(source);
   }
