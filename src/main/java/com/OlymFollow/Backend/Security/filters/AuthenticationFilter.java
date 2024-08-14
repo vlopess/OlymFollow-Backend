@@ -41,11 +41,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)  {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         User user = (User) authResult.getPrincipal();
         var tokenJWT = jwtTokenService.generateToken(user);
         response.addHeader("Authorization", "Bearer " + tokenJWT);
         response.addHeader("UserID", user.getId().toString());
+        new ObjectMapper().writeValue(response.getOutputStream(), user);
     }
 
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
