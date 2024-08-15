@@ -18,8 +18,7 @@ public class UserRegisterDTO {
     private String email;
     @NotBlank(message="Enter password")
     private String password;
-    @NotNull
-    private List<RoleDto> roles;
+    private List<RoleDto> roles = List.of(new RoleDto(1L, "USER_ROLE"));
 
 
     public UserRegisterDTO(){}
