@@ -46,7 +46,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         var tokenJWT = jwtTokenService.generateToken(user);
         response.addHeader("Authorization", "Bearer " + tokenJWT);
         response.addHeader("UserID", user.getId().toString());
-        new ObjectMapper().writeValue(response.getOutputStream(), user);
     }
 
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
