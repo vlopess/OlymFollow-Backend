@@ -13,6 +13,7 @@ public class Country {
     private Long id;
     @Column(nullable = false, unique = true)
     private String nome;
+    private String urlImage;
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Medalha> medalhas = new ArrayList<>();
 
@@ -32,6 +33,9 @@ public class Country {
     }
     public List<Medalha> getMedalhas() {
         return medalhas;
+    }
+    public String getUrlImage() {
+        return urlImage;
     }
 
     public int getNumberOfGolds() {

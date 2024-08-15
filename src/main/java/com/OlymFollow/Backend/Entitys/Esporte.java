@@ -10,18 +10,23 @@ public class Esporte {
     private Long id;
     @Column(nullable = false, unique = true)
     private String nome;
+    private String urlImage;
 
     public Esporte() {
 
     }
-    public Esporte(Long id, String nome) {
+    public Esporte(Long id, String nome, String urlImage) {
         this.id = id;
         this.nome = nome.toUpperCase();
+        this.urlImage = urlImage;
     }
     public String getNome() {
         return nome;
     }
     public Long getId() {
         return id;
+    }
+    public String getUrlImage() {
+        return urlImage;
     }
 }
