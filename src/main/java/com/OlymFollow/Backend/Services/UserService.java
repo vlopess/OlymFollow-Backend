@@ -32,9 +32,9 @@ public class UserService {
         return userRepository.findAll(pageable).map(UserDTO::new);
     }
 
-    public UserDTO getUserById(String encryptedId) throws Exception {
+    public UserDTO getUserById(String id) throws Exception {
         //Long id = new EncryptedId(encryptedId).getDecrypted();
-        Optional<User> user = userRepository.findById(Long.parseLong(encryptedId));
+        Optional<User> user = userRepository.findById(Long.parseLong(id));
         return new UserDTO(unwrap(user));
     }
 

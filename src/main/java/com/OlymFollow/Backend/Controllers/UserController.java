@@ -41,8 +41,8 @@ public class UserController {
     @GetMapping
     @Secured("ROLE_USER")
     @Operation(summary = "Busca o usuário pelo ID", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<UserDTO> getUserById(@RequestParam String encryptedId) throws Exception {
-        var user = userService.getUserById(encryptedId);
+    public ResponseEntity<UserDTO> getUserById(@RequestParam String id) throws Exception {
+        var user = userService.getUserById(id);
         return ResponseEntity.ok(user);
 
     }
