@@ -36,7 +36,11 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity handleExceptionFollower(Exception e) {
+    public ResponseEntity handleExceptionFollower(Exception ex) {
+        if (ex.getCause() != null && ex.getCause().getMessage().contains("constraint")) {
+            var field = ex.getCause() != null && ex.getCause().getMessage().contains("Key (email)") ? "E-mail já está em uso por outra conta!" : ex.getCause() != null && ex.getCause().getMessage().contains("Key (username)") ? "Username já está em uso por outra conta!" : "Chave duplicada encontrada";
+            return new ResponseEntity<>(field, HttpStatus.CONFLICT);
+        }
         return ResponseEntity.badRequest().body("You are already subscribed!");
     }
 
