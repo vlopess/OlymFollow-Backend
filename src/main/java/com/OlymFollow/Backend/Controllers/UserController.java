@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -59,13 +58,9 @@ public class UserController {
     @PostMapping("/register")
     @Operation(summary = "Cria um usuário")
     public ResponseEntity<Object> addUser(@RequestBody @Valid UserRegisterDTO userDTO, UriComponentsBuilder uriBuilder) throws Exception {
-        try {
-            User user = userService.addUser(userDTO);
-            URI uri = uriBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
-            return ResponseEntity.created(uri).body(("User added!"));
-        }catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+        User user = userService.addUser(userDTO);
+        URI uri = uriBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(("User added!"));
     }
 
     @Transactional
