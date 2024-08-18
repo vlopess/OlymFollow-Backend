@@ -1,7 +1,6 @@
 package com.OlymFollow.Backend.Entitys;
 
 import com.OlymFollow.Backend.Dtos.MedalDTO;
-import com.OlymFollow.Backend.Dtos.MedalRegisterDTO;
 import com.OlymFollow.Backend.Models.Medal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -20,14 +19,20 @@ public class Medalha {
     @ManyToOne
     private Country country;
 
-    public Medalha() {
+    public Medalha() {}
 
-    }
-    public Medalha(MedalDTO model){
+    public Medalha(MedalDTO model) {
         this.medalha = model.medalha();
         this.nomeAtleta = model.nomeAtleta();
         this.esporte = model.esporte();
         this.country = model.country();
+    }
+
+    public Medalha(MedalDTO model, Esporte esporte, Country country) {
+        this.medalha = model.medalha();
+        this.nomeAtleta = model.nomeAtleta();
+        this.esporte = esporte;
+        this.country = country;
     }
 
     public Long getId() {

@@ -5,7 +5,6 @@ import com.OlymFollow.Backend.Dtos.UserRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         // TODO Auto-generated method stub
-        return username;
+        return email;
     }
 
     public List<Role> getRoles() {

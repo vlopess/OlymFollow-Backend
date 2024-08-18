@@ -3,14 +3,12 @@ package com.OlymFollow.Backend.Services;
 
 import com.OlymFollow.Backend.Dtos.UserDTO;
 import com.OlymFollow.Backend.Dtos.UserRegisterDTO;
-import com.OlymFollow.Backend.Entitys.Country;
 import com.OlymFollow.Backend.Entitys.User;
 import com.OlymFollow.Backend.Repositories.CountryRepository;
 import com.OlymFollow.Backend.Repositories.UserRepository;
 import com.OlymFollow.Backend.Security.infra.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

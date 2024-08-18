@@ -37,11 +37,8 @@ public class CountryService {
     }
 
     public Country salvar(Country country) {
-        var countryExists = countryRepository.findByNome(country.getNome());
-        if (countryExists.isEmpty()) {
-            return countryRepository.save(country);
-        }
-        return country;
+        Optional<Country> countryExists = countryRepository.findByNome(country.getNome());
+        return countryExists.orElseGet(() -> countryRepository.save(country));
     }
 
     static Country unwrap(Optional<Country> country) {
