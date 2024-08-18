@@ -2,7 +2,7 @@ package com.OlymFollow.Backend.Controllers;
 
 import com.OlymFollow.Backend.Dtos.CountryDetailsDTO;
 import com.OlymFollow.Backend.Dtos.MedalDTO;
-import com.OlymFollow.Backend.Dtos.MedalRegisterDTO;
+import com.OlymFollow.Backend.Entitys.Medalha;
 import com.OlymFollow.Backend.Services.CountryService;
 import com.OlymFollow.Backend.Services.MedalService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,7 +55,7 @@ public class MedalController {
     @Secured("ROLE_ADMIN")
     @Operation(summary = "Cadastra uma medalha (ROLE ADMIN)", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<String> save(@RequestBody MedalDTO medalDTO, UriComponentsBuilder uriBuilder) throws Exception {
-        var medal = medalService.addMedal(medalDTO);
+        Medalha medal = medalService.addMedal(medalDTO);
         URI uri = uriBuilder.path("/medalhas/{id}").buildAndExpand(medal.getId()).toUri();
         return ResponseEntity.created(uri).body(("Medal added!"));
     }

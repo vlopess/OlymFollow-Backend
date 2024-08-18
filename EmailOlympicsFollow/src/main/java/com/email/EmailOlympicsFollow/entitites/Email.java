@@ -60,4 +60,20 @@ public class Email {
   public void setStatus(EmailStatus status) {
     this.status = status;
   }
+
+  public void setMailFrom(String mailFrom) {
+    this.mailFrom = mailFrom;
+  }
+
+  public void setMailTo(String mailTo) {
+    this.mailTo = mailTo;
+  }
+
+  public void setMailSubject(String mailSubject) {
+    this.mailSubject = mailSubject;
+  }
+
+  public void setMailText(String mailText) {
+    this.mailText = mailText;
+  }
 }

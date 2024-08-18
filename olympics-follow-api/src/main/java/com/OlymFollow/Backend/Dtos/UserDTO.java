@@ -1,6 +1,5 @@
 package com.OlymFollow.Backend.Dtos;
 
-import com.OlymFollow.Backend.Entitys.Country;
 import com.OlymFollow.Backend.Entitys.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -1,13 +1,9 @@
 package com.OlymFollow.Backend.Dtos;
 
 import com.OlymFollow.Backend.Entitys.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserRegisterDTO {

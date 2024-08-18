@@ -1,7 +1,6 @@
 package com.OlymFollow.Backend.Controllers;
 
 import com.OlymFollow.Backend.Dtos.CountryDTO;
-import com.OlymFollow.Backend.Entitys.Country;
 import com.OlymFollow.Backend.Services.CountryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

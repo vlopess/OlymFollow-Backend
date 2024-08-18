@@ -1,7 +1,5 @@
 package com.OlymFollow.Backend.Dtos;
 
-import com.OlymFollow.Backend.Entitys.Country;
-import com.OlymFollow.Backend.Entitys.Esporte;
 import com.OlymFollow.Backend.Entitys.Medalha;
 import com.OlymFollow.Backend.Models.Medal;
 
