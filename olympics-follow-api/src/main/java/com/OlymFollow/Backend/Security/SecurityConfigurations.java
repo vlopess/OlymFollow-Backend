@@ -46,7 +46,7 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(requests -> {
                     requests.requestMatchers(AUTH_WHITELIST).permitAll();
                     requests.requestMatchers(HttpMethod.POST, "/user/register").permitAll();
-                    requests.requestMatchers(HttpMethod.POST, "/authenticate").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/authenticate/google").permitAll();
                     requests.requestMatchers(HttpMethod.GET, "/OlymFollow/medalhas").permitAll();
                     requests.requestMatchers(HttpMethod.GET, "/OlymFollow/medalhas/**").permitAll();
                     requests.anyRequest().authenticated();

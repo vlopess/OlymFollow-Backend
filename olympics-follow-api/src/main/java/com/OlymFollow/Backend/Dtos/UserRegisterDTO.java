@@ -1,6 +1,7 @@
 package com.OlymFollow.Backend.Dtos;
 
 import com.OlymFollow.Backend.Entitys.User;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -14,6 +15,7 @@ public class UserRegisterDTO {
     private String email;
     @NotBlank(message="Enter password")
     private String password;
+    private String pictureUrl;
     private List<RoleDto> roles = List.of(new RoleDto(1L, "USER_ROLE"));
 
 
@@ -32,6 +34,14 @@ public class UserRegisterDTO {
         this.roles = user.getRoles().stream().map(RoleDto::new).toList();
     }
 
+    public UserRegisterDTO(GoogleIdToken.Payload payload) {
+        this.username = (String) payload.get("name");
+        this.email = payload.getEmail();
+        this.pictureUrl = (String) payload.get("picture");
+        this.roles = List.of(new RoleDto(1L, "USER_ROLE"));
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,6 +56,7 @@ public class UserRegisterDTO {
     public String getPassword() {
         return password;
     }
+    public String getPictureUrl() { return pictureUrl; }
     public List<RoleDto> getRoles() {
         return roles;
     }

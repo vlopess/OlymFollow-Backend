@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @WebFilter(urlPatterns = "/api/**")
@@ -32,7 +33,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var tokenJWT = getToken(request);
-        if (tokenJWT != null) {
+        if (!Objects.equals(tokenJWT, "null")) {
             var username = jwtTokenService.verifyToken(tokenJWT);
             var user = userRepository.findByUsername(username);
             if (user.isEmpty()) throw new NotFoundException();
@@ -45,7 +46,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     public String getToken(HttpServletRequest request) {
         var token = request.getHeader("Authorization");
         if (token == null || !token.startsWith("Bearer ")) {
-            return null;
+            return "null";
         }
         return token.replace("Bearer ", "");
     }

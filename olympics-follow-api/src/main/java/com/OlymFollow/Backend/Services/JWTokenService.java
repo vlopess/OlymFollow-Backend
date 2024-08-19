@@ -18,12 +18,12 @@ public class JWTokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(User user){
+    public String generateToken(String nome){
         try {
             var algorithm = getAlgorithm();
             return JWT.create()
                     .withIssuer("Haunted API")
-                    .withSubject(user.getUsername())
+                    .withSubject(nome)
                     .withExpiresAt(dataExpiration())
                     .sign(algorithm);
         }catch (JWTCreationException e){

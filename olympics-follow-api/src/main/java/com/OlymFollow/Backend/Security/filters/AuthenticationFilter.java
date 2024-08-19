@@ -43,7 +43,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         User user = (User) authResult.getPrincipal();
-        var tokenJWT = jwtTokenService.generateToken(user);
+        var tokenJWT = jwtTokenService.generateToken(user.getUsername());
         response.addHeader("Authorization", "Bearer " + tokenJWT);
         response.addHeader("UserID", user.getId().toString());
     }

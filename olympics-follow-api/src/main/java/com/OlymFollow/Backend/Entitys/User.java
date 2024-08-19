@@ -22,6 +22,7 @@ public class User implements UserDetails {
     private String email;
     @JsonIgnore
     private String password;
+    private String pictureUrl;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -81,6 +82,9 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+    public String getPictureUrl(){
+        return pictureUrl;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -100,7 +104,7 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         // TODO Auto-generated method stub
-        return email;
+        return username;
     }
 
     public List<Role> getRoles() {

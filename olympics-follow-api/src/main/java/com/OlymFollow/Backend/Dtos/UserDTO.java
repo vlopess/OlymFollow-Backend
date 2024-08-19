@@ -19,6 +19,7 @@ public class UserDTO {
     @NotBlank(message="Enter password")
     @JsonIgnore
     private String password;
+    private String pictureUrl;
     @NotNull
     private List<RoleDto> roles;
     @JsonIgnoreProperties({"medalhas"})
@@ -37,6 +38,7 @@ public class UserDTO {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
+        this.pictureUrl = user.getPictureUrl();
         this.roles = user.getRoles().stream().map(RoleDto::new).toList();
         this.inscricoes = user.getInscricoes().stream().map(CountryDetailsDTO::new).toList();
     }
@@ -58,6 +60,7 @@ public class UserDTO {
     public List<RoleDto> getRoles() {
         return roles;
     }
+    public String getPictureUrl() { return pictureUrl; }
     public List<CountryDetailsDTO> getInscricoes() {
         return inscricoes;
     }
