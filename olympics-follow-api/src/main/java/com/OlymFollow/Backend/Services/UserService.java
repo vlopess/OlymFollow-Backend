@@ -42,7 +42,7 @@ public class UserService {
 
     public User addUser(UserRegisterDTO userDTO) {
         User user = new User(userDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != null) user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
