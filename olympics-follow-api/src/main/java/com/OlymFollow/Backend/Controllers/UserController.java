@@ -22,12 +22,16 @@ import java.net.URI;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
+    final private UserService userService;
+    final private JWTokenService jwtTokenService;
+
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JWTokenService jwtTokenService) {
+
         this.userService = userService;
-    }
+        this.jwtTokenService = jwtTokenService;
+        }
 
     @GetMapping(value = "GetAll")
     @Operation(summary = "Busca todos usuários", description = "Retorna uma página com os usuários", security = @SecurityRequirement(name = "bearer-key"))
@@ -60,6 +64,10 @@ public class UserController {
     public ResponseEntity<Object> addUser(@RequestBody @Valid UserRegisterDTO userDTO, UriComponentsBuilder uriBuilder) throws Exception {
         User user = userService.addUser(userDTO);
         URI uri = uriBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+        HttpHeaders headers = new HttpHeaders();
+        var token = jwtTokenService.generateToken(user.getUsername());
+        headers.add("Authorization", "Bearer " + token);
+        headers.add("userID", user.getId().toString());
         return ResponseEntity.created(uri).body(("User added!"));
     }
 
