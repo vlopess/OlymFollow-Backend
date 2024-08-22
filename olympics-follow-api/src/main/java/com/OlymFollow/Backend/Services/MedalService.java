@@ -9,12 +9,16 @@ import com.OlymFollow.Backend.Entitys.User;
 import com.OlymFollow.Backend.Repositories.MedalRepository;
 import com.email.EmailOlympicsFollow.dtos.EmailDTO;
 import com.email.EmailOlympicsFollow.entitites.Email;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MedalService {
@@ -25,6 +29,9 @@ public class MedalService {
 
     @Autowired
     private EmailClient emailClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
     public MedalService(MedalRepository medalRepository, CountryService countryService, EsporteService esporteService) {
@@ -52,28 +59,13 @@ public class MedalService {
         Esporte esporte = esporteService.salvar(medaldto.esporte());
         Medalha medal = new Medalha(medaldto, esporte, country);
 
-        // Obter o email do usuário autenticado
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // User user = (User) authentication.getPrincipal();
-        // String emailUsuario = user.getEmail();
+        Map<String, Object> medalData = new HashMap<>();
+        medalData.put("nomeAtleta", medaldto.nomeAtleta());
+        medalData.put("country", medaldto.country().getNome());
+        medalData.put("medalha", medaldto.medalha().name());
+        medalData.put("esporte", medaldto.esporte().getNome());
 
-        // System.out.println(emailUsuario);
-
-        Email email = new Email();
-        email.setMailFrom("segiocerq11@gmail.com");
-        email.setMailTo("segiocerq11@gmail.com");
-        email.setMailSubject("Um país que você segue ganhou uma nova medalha!");
-        email.setMailText(
-            "OlympicsFollow informa: " +
-            medal.getNomeAtleta() +
-            " do "  + medaldto.country().getNome() +
-            " ganhou uma medalha de " +
-            medaldto.medalha().name() +
-            " no(a) " +
-            medaldto.esporte().getNome() +
-            "."
-        );
-        emailClient.sendEmail(new EmailDTO(email));
+        this.rabbitTemplate.convertAndSend("email-medalha", medalData);
         return medalRepository.save(medal);
 
     }
