@@ -1,5 +1,6 @@
 package com.rabbitmq.message_service.amqp;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -19,21 +20,37 @@ public class RabbitMQConfig {
   private String QUEUE_NAME;
 
   @Bean
+  @Operation (
+    summary = "Criação da fila",
+    description = "Realiza a criação da fila não durável com nome injetado na variável QUEUE_NAME."
+  )
   public Queue createQueue() {
     return QueueBuilder.nonDurable(QUEUE_NAME).build();
   }
 
   @Bean
+  @Operation(
+    summary = "Criação da rabbit admin",
+    description = "Cria o objeto rabbitAdmin para que possam ser realizadas operações adminitstrativas (funções de admin)."
+  )
   public RabbitAdmin generateRabbitAdmin(ConnectionFactory conn) {
     return new RabbitAdmin(conn);
   }
 
   @Bean
+  @Operation(
+    summary = "Inicialização da rabbit admin",
+    description = "Inicializa o objeto rabbitAdmin. O evento ApplicationReadyEvent é utilizado para garantir que a aplicação esteja pronta para receber requisições."
+  )
   public ApplicationListener<ApplicationReadyEvent> startAdmin(RabbitAdmin rabbitAdmin) {
     return event -> rabbitAdmin.initialize();
   }
 
   @Bean
+  @Operation(
+    summary = "Criação do rabbit template",
+    description = "Cria o objeto rabbitTemplate para que possam ser realizadas operações de envio de mensagens."
+  )
   public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, Jackson2JsonMessageConverter messageConverter) {
     RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
     rabbitTemplate.setMessageConverter(messageConverter);
@@ -41,6 +58,10 @@ public class RabbitMQConfig {
   }
 
   @Bean
+  @Operation(
+    summary = "Criação do Jackson2MessageConverter",
+    description = "Cria o objeto messageConverter para que possam ser realizadas operações de conversão de mensagens."
+  )
   public Jackson2JsonMessageConverter messageConverter(){
     return new Jackson2JsonMessageConverter();
   }
