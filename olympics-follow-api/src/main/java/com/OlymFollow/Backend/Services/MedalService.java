@@ -1,6 +1,5 @@
 package com.OlymFollow.Backend.Services;
 
-import com.OlymFollow.Backend.Clients.EmailClient;
 import com.OlymFollow.Backend.Dtos.MedalDTO;
 import com.OlymFollow.Backend.Entitys.Country;
 import com.OlymFollow.Backend.Entitys.Esporte;
@@ -22,15 +21,17 @@ public class MedalService {
     private final CountryService countryService;
     private final MedalRepository medalRepository;
     private final EsporteService esporteService;
+    private final EmailService emailService;
+    private final UserService userService;
+
 
     @Autowired
-    private EmailClient emailClient;
-
-    @Autowired
-    public MedalService(MedalRepository medalRepository, CountryService countryService, EsporteService esporteService) {
+    public MedalService(MedalRepository medalRepository, CountryService countryService, EsporteService esporteService, EmailService emailService, UserService userService) {
         this.medalRepository = medalRepository;
         this.countryService = countryService;
         this.esporteService = esporteService;
+        this.emailService = emailService;
+        this.userService = userService;
     }
 
     public List<MedalDTO> getAllMedals() {
@@ -53,21 +54,24 @@ public class MedalService {
 
         Medalha medal = new Medalha(medaldto, esporte, country);
 
-        Email email = new Email();
-        email.setMailFrom("segiocerq11@gmail.com");
-        email.setMailTo("segiocerq11@gmail.com");
-        email.setMailSubject("Um país que você segue ganhou uma nova medalha!");
-        email.setMailText(
-                "OlympicsFollow informa: " +
-                        medal.getNomeAtleta() +
-                        " do "  + medal.getCountry().getNome() +
-                        " ganhou uma medalha de " +
-                        medal.getMedalha() +
-                        " no(a) " +
-                        medal.getEsporte().getNome() +
-                        "."
-        );
-        emailClient.sendEmail(new EmailDTO(email));
+
+        var users = userService.getUsersWhatFollowsCountry(country.getNome());
+        users.forEach(userDTO -> {
+            Email email = new Email();
+            email.setMailTo(userDTO.getEmail());
+            email.setMailSubject("Um país que você segue ganhou uma nova medalha!");
+            email.setMailText(
+                    "OlympicsFollow informa: " +
+                            medal.getNomeAtleta() +
+                            " do(a) "  + medal.getCountry().getNome() +
+                            " ganhou uma medalha de " +
+                            medal.getMedalha() +
+                            " no(a) " +
+                            medal.getEsporte().getNome() +
+                            "."
+            );
+            emailService.sendEmail(email);
+        });
         return medalRepository.save(medal);
 
     }

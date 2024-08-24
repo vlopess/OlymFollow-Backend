@@ -51,7 +51,7 @@ public class User implements UserDetails {
         this.username = userDTO.getUsername();
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
-        this.pictureUrl = registerDTO.getPictureUrl();
+        this.pictureUrl = userDTO.getPictureUrl();
         this.roles = userDTO.getRoles().stream().map(Role::new).toList();
     }
 

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -64,6 +65,11 @@ public class UserService {
         var countryOp = countryRepository.findById((long) countryID);
         var country = CountryService.unwrap(countryOp);
         user.unsubscribe(country);
+    }
+
+    public List<UserDTO> getUsersWhatFollowsCountry(String countryName){
+        var users = userRepository.findByInscricoesNome(countryName);
+        return users.stream().map(UserDTO::new).toList();
     }
 
     public void deleteUser(Long id){
