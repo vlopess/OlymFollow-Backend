@@ -22,14 +22,13 @@ public class Medalha {
     public Medalha() {}
 
     public Medalha(MedalDTO model) {
-        this.medalha = model.medalha();
+        this.medalha = Medal.valueOf(model.tipoMedalha());
         this.nomeAtleta = model.nomeAtleta();
-        this.esporte = model.esporte();
-        this.country = model.country();
+        this.esporte = new Esporte(model.esporte());
     }
 
     public Medalha(MedalDTO model, Esporte esporte, Country country) {
-        this.medalha = model.medalha();
+        this.medalha = Medal.fromString(model.tipoMedalha());
         this.nomeAtleta = model.nomeAtleta();
         this.esporte = esporte;
         this.country = country;
