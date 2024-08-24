@@ -47,6 +47,6 @@ public class JWTokenService {
     }
 
     private static Instant dataExpiration() {
-        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
     }
 }
