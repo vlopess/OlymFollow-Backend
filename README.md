@@ -27,7 +27,7 @@ implementar mensageria com RabbitMQ.
 
 #### Busca o usuário pelo ID
 
-```http
+```curl
   GET baseURL + /user
 ```
 
@@ -37,7 +37,7 @@ implementar mensageria com RabbitMQ.
 
 #### Busca o usuário pelo username
 
-```http
+```curl
   GET baseURL + /user/${username}
 ```
 
@@ -47,14 +47,14 @@ implementar mensageria com RabbitMQ.
 
 #### Busca todos os usuários
 
-```http
+```curl
   GET baseURL + /user/GetAll
 ```
 
 `Sem parâmetro`
 
 #### Apaga o usuário pelo ID
-```http
+```curl
   DELETE baseURL + /user/${id}
 ```
 
@@ -64,7 +64,7 @@ implementar mensageria com RabbitMQ.
 
 #### Cria um usuário
 
-```http
+```curl
   POST baseURL + /user/register
 ```
 
@@ -74,7 +74,7 @@ implementar mensageria com RabbitMQ.
 
 #### Segue um país, para receber notificação
 
-```http
+```curl
   POST baseURL + /user/subscribe/${userID}/${countryID}
 ```
 
@@ -85,7 +85,7 @@ implementar mensageria com RabbitMQ.
 
 #### Deixa de seguir um país
 
-```http
+```curl
   DELETE baseURL + /user/unsubscribe/${userID}/${countryID}
 ```
 
@@ -98,7 +98,7 @@ implementar mensageria com RabbitMQ.
 
 #### Faz login com google
 
-```http
+```curl
   POST baseURL + /authenticate/google
 ```
 
@@ -111,14 +111,14 @@ implementar mensageria com RabbitMQ.
 
 #### Busca todas as medalhas
 
-```http
+```curl
   GET baseURL + /OlymFollow/medalhas
 ```
 `Sem parâmetro`
 
 #### Cadastra uma medalha (Obs: somente usuários admin podem cadastrar)
 
-```http
+```curl
   POST baseURL + /OlymFollow/medalhas/cadastrar
 ```
 
@@ -131,7 +131,7 @@ implementar mensageria com RabbitMQ.
 
 #### Busca todas os esportes
 
-```http
+```curl
   GET baseURL + /esportes
 ```
 `Sem parâmetro`
@@ -140,7 +140,7 @@ implementar mensageria com RabbitMQ.
 
 #### Busca todas os países
 
-```http
+```curl
   GET baseURL + /countries
 ```
 `Sem parâmetro`
